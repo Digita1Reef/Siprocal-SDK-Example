@@ -19,3 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#Siprocal Proguard Configuration
+
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+-dontwarn java.lang.management.RuntimeMXBean
+-dontwarn java.lang.management.ManagementFactory
+-keepattributes InnerClasses
+-keepclassmembers @kotlinx.serialization.Serializable class **{
+*** Companion;
+}
+-dontwarn kotlinx.atomicfu.**
+-dontwarn io.netty.**
+-dontwarn com.typesafe.**
+-dontwarn org.slf4j.**
