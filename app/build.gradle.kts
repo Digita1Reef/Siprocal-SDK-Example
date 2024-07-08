@@ -46,5 +46,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation ("com.digitalreef.phoenix:<variant>:5.0.6")
+    implementation ("com.digitalreef.phoenix:<variant>:5.2.0")
 }
