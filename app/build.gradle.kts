@@ -53,5 +53,5 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
 
 
-    implementation ("com.digitalreef.phoenix:<variant>:5.0.6")
+    implementation ("com.digitalreef.phoenix:<variant>:5.2.0")
 }
