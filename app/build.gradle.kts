@@ -52,6 +52,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
 
-
+    implementation("com.github.clans:fab:1.6.4")
     implementation ("com.digitalreef.phoenix:<variant>:5.2.0")
 }
