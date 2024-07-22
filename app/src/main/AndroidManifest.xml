@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SiprocalSDKExample"
+        tools:targetApi="31"
         android:name=".MainApplication">
         <activity
             android:name=".SplashActivity"
@@ -39,6 +40,13 @@
             android:name=".MainActivity"
             android:exported="true">
         </activity>
+        <service
+            android:name=".YourFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
