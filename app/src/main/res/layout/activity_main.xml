@@ -1,128 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".MainActivity">
+    tools:context=".ui.view.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/principalLayout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:orientation="vertical">
+        android:layout_margin="5dp">
 
         <LinearLayout
-            android:id="@+id/header_layout"
+            android:id="@+id/principalLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/background"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-
-            <ImageView
-                android:id="@+id/app_icon"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/logo" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/fira_code_bold"
-                android:text="@string/app_name"
-                android:textColor="#00FF00"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="@color/backgroundCardView"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp">
+            android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/header_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <ScrollView
+                <ImageView
+                    android:id="@+id/app_icon"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/fira_code_bold"
+                    android:text="@string/app_name"
+                    android:textColor="#00FF00"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/backgroundCardView"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/console_output"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/fira_code_regular"
-                                android:padding="8dp"
-                                android:text=""
-                                android:textColor="#00FF00"
-                                android:textSize="14sp"
-                                tools:ignore="RtlSymmetry" />
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/console_output"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/fira_code_regular"
+                                    android:padding="8dp"
+                                    android:text=""
+                                    android:textColor="#00FF00"
+                                    android:textSize="14sp"
+                                    tools:ignore="RtlSymmetry" />
+                            </LinearLayout>
                         </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-                    </LinearLayout>
-                </ScrollView>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        fab:menu_colorNormal="#DA4336"
-        fab:menu_colorPressed="#E75043">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item_1"
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/notification_center_icon"
-            app:fab_colorNormal="#DA4336"
-            fab:fab_label="Notification Center"
-            android:visibility="gone"
-            fab:fab_size="mini" />
+            android:layout_gravity="bottom|right"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            fab:menu_colorNormal="#DA4336"
+            fab:menu_colorPressed="#E75043">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/refresh_icon"
-            app:fab_colorNormal="#DA4336"
-            fab:fab_label="Refresh"
-            fab:fab_size="mini" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/notification_center_icon"
+                app:fab_colorNormal="#DA4336"
+                fab:fab_label="Notification Center"
+                android:visibility="visible"
+                fab:fab_size="mini" />
 
-    </com.github.clans.fab.FloatingActionMenu>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/menu_item_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/refresh_icon"
+                app:fab_colorNormal="#DA4336"
+                fab:fab_label="Refresh"
+                fab:fab_size="mini" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </com.github.clans.fab.FloatingActionMenu>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

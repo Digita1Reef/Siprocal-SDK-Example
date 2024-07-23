@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!--Permission used for receive notification (Android 13+)-->
-    <uses-permission  android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <!--Permission used for capture AdvertisingId-->
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-
+    <!-- Permission used for receive notification (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" /><!-- Permission used for capture AdvertisingId -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,10 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SiprocalSDKExample"
-        tools:targetApi="31"
-        android:name=".MainApplication">
+        tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.view.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
-            android:name=".YourFirebaseMessagingService"
+            android:name=".ui.service.YourFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

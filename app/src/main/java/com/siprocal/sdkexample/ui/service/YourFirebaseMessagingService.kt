@@ -1,4 +1,4 @@
-package com.siprocal.sdkexample
+package com.siprocal.sdkexample.ui.service
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
