@@ -19,4 +19,8 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     suspend fun deleteOldNotifications() {
         notificationDao.deleteOldNotifications()
     }
+
+    suspend fun updateNotification(notification: Notification) {
+        notificationDao.updateNotification(notification)
+    }
 }

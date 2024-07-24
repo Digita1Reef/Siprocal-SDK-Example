@@ -23,9 +23,9 @@ class NotificationActivity : AppCompatActivity() {
         val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
         val repository = NotificationRepository(notificationDao)
         val factory = NotificationViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory)[NotificationViewModel::class.java]
 
-        notificationAdapter = NotificationAdapter(this)
+        notificationAdapter = NotificationAdapter(this, repository)
         binding.recyclerViewNotifications.apply {
             layoutManager = LinearLayoutManager(this@NotificationActivity)
             adapter = notificationAdapter

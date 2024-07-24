@@ -13,5 +13,6 @@ data class Notification(
     val finalizedAt: Long,
     val timestamp: Long,
     val actionType: Int,
-    val actionUrl: String
+    val actionUrl: String,
+    var clicked: Boolean = false
 )
