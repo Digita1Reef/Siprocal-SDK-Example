@@ -8,14 +8,12 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        android:layout_margin="5dp">
+        android:background="@color/background">
 
         <LinearLayout
             android:id="@+id/principalLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background"
             android:orientation="vertical">
 
             <LinearLayout
@@ -84,7 +82,8 @@
                                     android:text=""
                                     android:textColor="#00FF00"
                                     android:textSize="14sp"
-                                    tools:ignore="RtlSymmetry" />
+                                    tools:ignore="RtlSymmetry"
+                                    android:textIsSelectable="true"/>
                             </LinearLayout>
                         </LinearLayout>
                     </ScrollView>
@@ -107,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/notification_center_icon"
-                app:fab_colorNormal="#DA4336"
+                app:fab_colorNormal="@color/blue"
                 fab:fab_label="Notification Center"
                 android:visibility="visible"
                 fab:fab_size="mini" />
@@ -117,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/refresh_icon"
-                app:fab_colorNormal="#DA4336"
+                app:fab_colorNormal="@color/blue"
                 fab:fab_label="Refresh"
                 fab:fab_size="mini" />
 

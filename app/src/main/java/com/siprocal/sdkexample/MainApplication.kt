@@ -35,6 +35,8 @@ class MainApplication : Application(), NotificationDataListener, NotificationEve
             createdAt = notificationData.createdAt,
             startedAt =  notificationData.startedAt,
             finalizedAt = notificationData.finalizedAt,
+            actionType = notificationData.actionType,
+            actionUrl = notificationData.actionUrl,
             timestamp = System.currentTimeMillis()
         )
         // Save the notification to the database in the background

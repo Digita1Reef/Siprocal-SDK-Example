@@ -11,5 +11,7 @@ data class Notification(
     val createdAt: Long,
     val startedAt: Long,
     val finalizedAt: Long,
-    val timestamp: Long
+    val timestamp: Long,
+    val actionType: Int,
+    val actionUrl: String
 )

@@ -29,7 +29,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/fira_code_bold"
-                android:text="@string/app_name"
+                android:text="@string/notification_center"
                 android:textColor="#00FF00"
                 android:textSize="20sp" />
         </LinearLayout>

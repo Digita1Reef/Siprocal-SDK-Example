@@ -37,9 +37,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.menuItem1.setOnClickListener {
             startActivity(Intent(this, NotificationActivity::class.java))
+            binding.fab.close(true)
         }
         binding.menuItem2.setOnClickListener {
             refreshData()
+            binding.fab.close(true)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

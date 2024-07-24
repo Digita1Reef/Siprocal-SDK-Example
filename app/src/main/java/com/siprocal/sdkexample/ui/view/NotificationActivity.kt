@@ -25,7 +25,7 @@ class NotificationActivity : AppCompatActivity() {
         val factory = NotificationViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
 
-        notificationAdapter = NotificationAdapter()
+        notificationAdapter = NotificationAdapter(this)
         binding.recyclerViewNotifications.apply {
             layoutManager = LinearLayoutManager(this@NotificationActivity)
             adapter = notificationAdapter
@@ -42,7 +42,7 @@ class NotificationActivity : AppCompatActivity() {
         Snackbar.make(
             binding.root,
             "Only the last 10 notifications will be shown in this section",
-            Snackbar.LENGTH_INDEFINITE
+            Snackbar.LENGTH_LONG
         ).setAction("OK") {
             // Acción cuando se presiona el botón OK, el Snackbar se cerrará automáticamente
         }.show()
