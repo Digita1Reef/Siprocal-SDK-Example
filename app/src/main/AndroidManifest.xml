@@ -22,7 +22,7 @@
         android:theme="@style/Theme.SiprocalSDKExample"
         tools:targetApi="31">
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.view.SplashActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:noHistory="true" >

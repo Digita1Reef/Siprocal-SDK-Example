@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         refreshData()
+
+        SiprocalSDK.showAvailableAd(this)
     }
 
     private fun checkAndRequestNotificationPermission() {
