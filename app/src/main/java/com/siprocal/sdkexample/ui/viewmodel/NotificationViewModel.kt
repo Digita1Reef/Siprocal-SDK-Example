@@ -1,5 +1,6 @@
 package com.siprocal.sdkexample.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,25 +10,17 @@ import kotlinx.coroutines.launch
 
 class NotificationViewModel(private val repository: NotificationRepository) : ViewModel() {
 
-    val notifications = MutableLiveData<List<Notification>>()
+    val notifications: LiveData<List<Notification>> = repository.lastTenNotifications
 
     fun insertNotification(notification: Notification) {
         viewModelScope.launch {
             repository.insertNotification(notification)
-            fetchLastTenNotifications()
-        }
-    }
-
-    fun fetchLastTenNotifications() {
-        viewModelScope.launch {
-            notifications.value = repository.getLastTenNotifications()
         }
     }
 
     fun deleteOldNotifications() {
         viewModelScope.launch {
             repository.deleteOldNotifications()
-            fetchLastTenNotifications()
         }
     }
 }
