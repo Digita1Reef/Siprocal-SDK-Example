@@ -10,6 +10,7 @@ import com.siprocal.sdk.client.notificationcenter.NotificationEventType
 import com.siprocal.sdkexample.data.local.db.AppDatabase
 import com.siprocal.sdkexample.data.local.entity.Notification
 import com.siprocal.sdkexample.data.repository.NotificationRepository
+import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -32,10 +32,13 @@ class NotificationActivity : AppCompatActivity() {
         }
 
         viewModel.notifications.observe(this) { notifications ->
-            notificationAdapter.setNotifications(notifications)
+            if (notifications.isEmpty()) {
+                showNoNotificationsSnackbar()
+            } else {
+                notificationAdapter.setNotifications(notifications)
+            }
         }
 
-        viewModel.fetchLastTenNotifications()
         showSnackbar()
     }
     private fun showSnackbar() {
@@ -44,7 +47,14 @@ class NotificationActivity : AppCompatActivity() {
             "Only the last 10 notifications will be shown in this section",
             Snackbar.LENGTH_LONG
         ).setAction("OK") {
-            // Acción cuando se presiona el botón OK, el Snackbar se cerrará automáticamente
+            // Action when the OK button is pressed, the Snackbar will automatically close
         }.show()
+    }
+    private fun showNoNotificationsSnackbar() {
+        Snackbar.make(
+            binding.root,
+            "No recent notifications",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }
