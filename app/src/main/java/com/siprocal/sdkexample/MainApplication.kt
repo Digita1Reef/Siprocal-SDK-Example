@@ -2,16 +2,6 @@ package com.siprocal.sdkexample
 
 import android.app.Application
 import com.siprocal.sdk.client.SiprocalSDK
-import com.siprocal.sdk.client.notificationcenter.NotificationData
-import com.siprocal.sdk.client.notificationcenter.NotificationDataListener
-import com.siprocal.sdk.client.notificationcenter.NotificationEventListener
-import com.siprocal.sdk.client.notificationcenter.NotificationEventType.*
-import com.siprocal.sdkexample.data.local.db.AppDatabase
-import com.siprocal.sdkexample.data.local.entity.Notification
-import com.siprocal.sdkexample.data.repository.NotificationRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainApplication : Application(), NotificationDataListener, NotificationEventListener {
     override fun onCreate() {
