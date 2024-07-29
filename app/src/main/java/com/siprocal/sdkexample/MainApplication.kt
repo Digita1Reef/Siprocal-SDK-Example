@@ -37,7 +37,8 @@ class MainApplication : Application(), NotificationDataListener, NotificationEve
             finalizedAt = notificationData.finalizedAt,
             actionType = notificationData.actionType,
             actionUrl = notificationData.actionUrl,
-            timestamp = System.currentTimeMillis()
+            timestamp = System.currentTimeMillis(),
+            adId = notificationData.adId
         )
         // Save the notification to the database in the background
         CoroutineScope(Dispatchers.IO).launch {
@@ -50,11 +51,22 @@ class MainApplication : Application(), NotificationDataListener, NotificationEve
         adId: Long, notificationEventType: Type
     ) {
         //get the event from notificationEventType param
+        if((notificationEventType == Type.CLICK) or (notificationEventType == Type.CLOSED_NOTIFICATION)){
+            CoroutineScope(Dispatchers.IO).launch {
+                updateClickedByActionId(adId)
+            }
+        }
     }
 
     private suspend fun saveNotification(notification: Notification) {
         val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
         val repository = NotificationRepository(notificationDao)
         repository.insertNotification(notification)
+    }
+
+    private suspend fun updateClickedByActionId(actionId: Long) {
+        val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
+        val repository = NotificationRepository(notificationDao)
+        repository.updateClickedByActionId(actionId)
     }
 }

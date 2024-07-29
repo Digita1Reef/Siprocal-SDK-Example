@@ -22,4 +22,6 @@ interface NotificationDao {
 
     @Update
     suspend fun updateNotification(notification: Notification)
+    @Query("UPDATE notifications SET clicked = 1 WHERE adid = :adId")
+    suspend fun updateClickedByActionId(adId: Long): Int
 }
