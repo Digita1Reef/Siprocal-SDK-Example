@@ -19,4 +19,8 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
     suspend fun updateNotification(notification: Notification) {
         notificationDao.updateNotification(notification)
     }
+
+    suspend fun updateClickedByActionId(actionId: Long) {
+        notificationDao.updateClickedByActionId(actionId)
+    }
 }

@@ -10,7 +10,6 @@ import com.siprocal.sdk.client.notificationcenter.NotificationEventType
 import com.siprocal.sdkexample.data.local.db.AppDatabase
 import com.siprocal.sdkexample.data.local.entity.Notification
 import com.siprocal.sdkexample.data.repository.NotificationRepository
-import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,7 +41,8 @@ class MainApplication : Application(), NotificationDataListener, NotificationEve
             finalizedAt = notificationData.finalizedAt,
             actionType = notificationData.actionType,
             actionUrl = notificationData.actionUrl,
-            timestamp = System.currentTimeMillis()
+            timestamp = System.currentTimeMillis(),
+            adId = notificationData.adId
         )
         // Save the notification to the database in the background
         CoroutineScope(Dispatchers.IO).launch {
@@ -55,11 +55,22 @@ class MainApplication : Application(), NotificationDataListener, NotificationEve
         adId: Long, notificationEventType: NotificationEventType.Type
     ) {
         //get the event from notificationEventType param
+        if((notificationEventType == NotificationEventType.Type.CLICK) or (notificationEventType == NotificationEventType.Type.CLOSED_NOTIFICATION)){
+            CoroutineScope(Dispatchers.IO).launch {
+                updateClickedByActionId(adId)
+            }
+        }
     }
 
     private suspend fun saveNotification(notification: Notification) {
         val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
         val repository = NotificationRepository(notificationDao)
         repository.insertNotification(notification)
+    }
+
+    private suspend fun updateClickedByActionId(actionId: Long) {
+        val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
+        val repository = NotificationRepository(notificationDao)
+        repository.updateClickedByActionId(actionId)
     }
 }
