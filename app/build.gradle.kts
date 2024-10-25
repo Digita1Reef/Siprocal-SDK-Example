@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
 
     implementation(libs.fab)
-    implementation (libs.<variant>)// replace with the variant provided by Siprocal
+    implementation("com.digitalreef.phoenix:<variant>:5.3.1")
 
     implementation(libs.datastore.preferences)
 
