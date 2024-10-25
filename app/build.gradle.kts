@@ -66,5 +66,3 @@ dependencies {
     implementation("com.digitalreef.phoenix:<variant>:5.3.1")
 
     implementation(libs.datastore.preferences)
-
-}
