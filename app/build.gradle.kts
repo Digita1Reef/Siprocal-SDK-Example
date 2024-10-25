@@ -66,5 +66,3 @@ dependencies {
     implementation (libs.<variant>)// replace with the variant provided by Siprocal
 
     implementation(libs.datastore.preferences)
-
-}
