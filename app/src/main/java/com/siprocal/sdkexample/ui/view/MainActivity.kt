@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.siprocal.sdk.client.SiprocalSDK
 import com.siprocal.sdk.util.EnumManager
 import com.siprocal.sdkexample.R
@@ -19,6 +20,8 @@ import com.siprocal.sdkexample.data.local.db.AppDatabase
 import com.siprocal.sdkexample.data.repository.NotificationRepository
 import com.siprocal.sdkexample.data.repository.NotificationViewModelFactory
 import com.siprocal.sdkexample.databinding.ActivityMainBinding
+import com.siprocal.sdkexample.datastore.PreferenceDataStoreConstants
+import com.siprocal.sdkexample.datastore.PreferenceDataStoreHelper
 import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
 import com.siprocal.sdkexample.utils.Utils
 import kotlinx.coroutines.*
@@ -51,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         refreshData()
 
         SiprocalSDK.showAvailableAd(this)
+
+        requestSensitiveDataPermission()
     }
 
     private fun checkAndRequestNotificationPermission() {
@@ -130,6 +135,24 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
         CoroutineScope(Dispatchers.IO).launch {
             viewModel.deleteOldNotifications()
+        }
+    }
+
+    private fun requestSensitiveDataPermission() {
+        lifecycleScope.launch {
+            PreferenceDataStoreHelper(applicationContext).getPreference(
+                PreferenceDataStoreConstants.IS_DATA_SENSITIVE_REQUESTED,
+                false
+            ).collect {
+                val result = it
+                if (!result) {
+                    DialogSensitiveData(object : DialogSensitiveData.ListenerDialogSensitive {
+                        override fun onDismissDialogSensitive() {
+                            //implementation
+                        }
+                    }).show(supportFragmentManager, "SENSITIVE_DATA_DIALOG")
+                }
+            }
         }
     }
 }
