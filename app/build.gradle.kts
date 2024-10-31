@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
-    kotlin("kapt")
 }
 
 android {
@@ -58,10 +58,12 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
 
     // Room dependencies
-    implementation("androidx.room:room-runtime:2.5.0")
-    kapt("androidx.room:room-compiler:2.5.0")
-    implementation("androidx.room:room-ktx:2.5.0")
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
-    implementation("com.github.clans:fab:1.6.4")
-    implementation ("com.digitalreef.phoenix:<variant>:5.3.1")
+    implementation(libs.fab)
+    implementation("com.digitalreef.phoenix:<variant>:5.3.1")
+
+    implementation(libs.datastore.preferences)
 }
