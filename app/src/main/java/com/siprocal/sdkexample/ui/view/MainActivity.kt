@@ -13,8 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.siprocal.sdk.client.EnumManager
 import com.siprocal.sdk.client.SiprocalSDK
-import com.siprocal.sdk.util.EnumManager
 import com.siprocal.sdkexample.R
 import com.siprocal.sdkexample.data.local.db.AppDatabase
 import com.siprocal.sdkexample.data.repository.NotificationRepository
