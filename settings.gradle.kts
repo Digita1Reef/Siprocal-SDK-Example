@@ -12,7 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
         maven {
             url = uri("https://jitpack.io")
-            credentials {username = "<token provided by Siprocal>"}
         }
     }
 }
