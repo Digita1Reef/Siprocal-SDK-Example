@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.siprocal.sdkexample"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.siprocal.sdkexample"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -63,5 +63,5 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.0")
 
     implementation("com.github.clans:fab:1.6.4")
-    implementation ("com.digitalreef.phoenix:<variant>:5.3.1")
+    implementation ("com.digitalreef.phoenix:<variant>:5.4.1")
 }
