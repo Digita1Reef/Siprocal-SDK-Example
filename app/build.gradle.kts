@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
 
     implementation(libs.fab)
-    implementation("com.digitalreef.phoenix:<variant>:5.4.1")
+    implementation("com.digitalreef.phoenix:<variant>:5.6.0")
 
     implementation(libs.datastore.preferences)
 }
