@@ -63,5 +63,5 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.0")
 
     implementation("com.github.clans:fab:1.6.4")
-    implementation ("com.digitalreef.phoenix:<variant>:5.6.0")
+    implementation ("com.digitalreef.phoenix:<variant>:5.8.0")
 }
