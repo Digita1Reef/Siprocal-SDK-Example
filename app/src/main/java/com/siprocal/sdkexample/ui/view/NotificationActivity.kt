@@ -2,30 +2,29 @@ package com.siprocal.sdkexample.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import com.siprocal.sdkexample.data.local.db.AppDatabase
-import com.siprocal.sdkexample.data.repository.NotificationRepository
-import com.siprocal.sdkexample.data.repository.NotificationViewModelFactory
+import androidx.activity.viewModels
+import com.siprocal.sdkexample.MainApplication
 import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.siprocal.sdkexample.R
 import com.siprocal.sdkexample.databinding.ActivityNotificationBinding
 
 class NotificationActivity : AppCompatActivity() {
-    private lateinit var viewModel: NotificationViewModel
     private lateinit var binding: ActivityNotificationBinding
-    private lateinit var notificationAdapter: NotificationAdapter
+    private val viewModel: NotificationViewModel by viewModels {
+        (application as MainApplication).notificationViewModelFactory
+    }
+
+    private val notificationAdapter by lazy {
+        NotificationAdapter(viewModel::markNotificationAsClicked)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
-        val repository = NotificationRepository(notificationDao)
-        val factory = NotificationViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[NotificationViewModel::class.java]
-
-        notificationAdapter = NotificationAdapter(this, repository)
         binding.recyclerViewNotifications.apply {
             layoutManager = LinearLayoutManager(this@NotificationActivity)
             adapter = notificationAdapter
@@ -35,25 +34,25 @@ class NotificationActivity : AppCompatActivity() {
             if (notifications.isEmpty()) {
                 showNoNotificationsSnackbar()
             } else {
-                notificationAdapter.setNotifications(notifications)
+                notificationAdapter.submitList(notifications)
             }
         }
 
         showSnackbar()
     }
+
     private fun showSnackbar() {
         Snackbar.make(
             binding.root,
-            "Only the last 10 notifications will be shown in this section",
+            getString(R.string.notification_center_limit_message),
             Snackbar.LENGTH_LONG
-        ).setAction("OK") {
-            // Action when the OK button is pressed, the Snackbar will automatically close
-        }.show()
+        ).setAction(R.string.ok) {}.show()
     }
+
     private fun showNoNotificationsSnackbar() {
         Snackbar.make(
             binding.root,
-            "No recent notifications",
+            getString(R.string.no_recent_notifications),
             Snackbar.LENGTH_LONG
         ).show()
     }
