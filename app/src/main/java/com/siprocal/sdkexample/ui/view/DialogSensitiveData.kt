@@ -12,56 +12,38 @@ import com.siprocal.sdkexample.datastore.PreferenceDataStoreConstants
 import com.siprocal.sdkexample.datastore.PreferenceDataStoreHelper
 import kotlinx.coroutines.launch
 
-class DialogSensitiveData(private val listenerDialog: ListenerDialogSensitive) : DialogFragment() {
+class DialogSensitiveData : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            // Get the layout inflater.
-            val inflater = requireActivity().layoutInflater;
+            val inflater = requireActivity().layoutInflater
 
             val dialogView = inflater.inflate(R.layout.popup_permission, null)
+            val cancelButton = dialogView.findViewById<Button>(R.id.cancelButton)
+            val acceptButton = dialogView.findViewById<Button>(R.id.acceptButton)
 
-            val cancelButton =
-                dialogView.findViewById<Button>(R.id.cancelButton) // Replace with actual button IDs
-            val acceptButton =
-                dialogView.findViewById<Button>(R.id.acceptButton) // Replace with actual button IDs
+            cancelButton.setOnClickListener { persistSensitiveDataChoice(false) }
+            acceptButton.setOnClickListener { persistSensitiveDataChoice(true) }
 
-            // Set click listeners for the buttons
-            cancelButton.setOnClickListener {
-                // Handle button 1 click here
-                lifecycleScope.launch {
-                    context?.let { it1 ->
-                        PreferenceDataStoreHelper(it1).putPreference(
-                            PreferenceDataStoreConstants.IS_DATA_SENSITIVE_REQUESTED,
-                            true
-                        )
-                    }
-                }
-                context?.let { SiprocalSDK.setSensitiveData(false) }
-                listenerDialog.onDismissDialogSensitive()
-                dismiss()
-            }
-            acceptButton.setOnClickListener {
-                // Handle button 2 click here
-                lifecycleScope.launch {
-                    context?.let { it1 ->
-                        PreferenceDataStoreHelper(it1).putPreference(
-                            PreferenceDataStoreConstants.IS_DATA_SENSITIVE_REQUESTED,
-                            true
-                        )
-                    }
-                }
-                context?.let { SiprocalSDK.setSensitiveData(true) }
-                listenerDialog.onDismissDialogSensitive()
-                dismiss()
-            }
             builder.setView(dialogView)
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    interface ListenerDialogSensitive {
-        fun onDismissDialogSensitive()
+    private fun persistSensitiveDataChoice(enabled: Boolean) {
+        val appContext = context?.applicationContext ?: return
+        lifecycleScope.launch {
+            PreferenceDataStoreHelper(appContext).putPreference(
+                PreferenceDataStoreConstants.IS_DATA_SENSITIVE_REQUESTED,
+                true
+            )
+            SiprocalSDK.setSensitiveData(enabled)
+            dismiss()
+        }
+    }
+
+    companion object {
+        const val TAG = "SENSITIVE_DATA_DIALOG"
     }
 }

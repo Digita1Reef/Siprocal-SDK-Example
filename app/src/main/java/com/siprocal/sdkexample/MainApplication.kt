@@ -10,11 +10,23 @@ import com.siprocal.sdk.client.notificationcenter.NotificationEventType
 import com.siprocal.sdkexample.data.local.db.AppDatabase
 import com.siprocal.sdkexample.data.local.entity.Notification
 import com.siprocal.sdkexample.data.repository.NotificationRepository
+import com.siprocal.sdkexample.data.repository.NotificationViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class MainApplication : Application(), NotificationDataListener, NotificationEventListener {
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    val database: AppDatabase by lazy { AppDatabase.getDatabase(this) }
+    val notificationRepository: NotificationRepository by lazy {
+        NotificationRepository(database.notificationDao())
+    }
+    val notificationViewModelFactory: NotificationViewModelFactory by lazy {
+        NotificationViewModelFactory(notificationRepository)
+    }
+
     override fun onCreate() {
         super.onCreate()
         val siprocalSDKSettings = SiprocalSDKSettings.Builder()
@@ -37,40 +49,28 @@ class MainApplication : Application(), NotificationDataListener, NotificationEve
             title = notificationData.notificationTitle,
             message = notificationData.notificationDescription,
             createdAt = notificationData.createdAt,
-            startedAt =  notificationData.startedAt,
+            startedAt = notificationData.startedAt,
             finalizedAt = notificationData.finalizedAt,
             actionType = notificationData.actionType,
             actionUrl = notificationData.actionUrl,
             timestamp = System.currentTimeMillis(),
             adId = notificationData.adId
         )
-        // Save the notification to the database in the background
-        CoroutineScope(Dispatchers.IO).launch {
-            saveNotification(notification)
+        applicationScope.launch {
+            notificationRepository.insertNotification(notification)
         }
     }
-
 
     override fun onNotificationEventListener(
         adId: Long, notificationEventType: NotificationEventType.Type
     ) {
-        //get the event from notificationEventType param
-        if((notificationEventType == NotificationEventType.Type.CLICK) or (notificationEventType == NotificationEventType.Type.CLOSED_NOTIFICATION)){
-            CoroutineScope(Dispatchers.IO).launch {
-                updateClickedByActionId(adId)
+        val isClickOrDismiss = notificationEventType == NotificationEventType.Type.CLICK ||
+            notificationEventType == NotificationEventType.Type.CLOSED_NOTIFICATION
+
+        if (isClickOrDismiss) {
+            applicationScope.launch {
+                notificationRepository.updateClickedByActionId(adId)
             }
         }
-    }
-
-    private suspend fun saveNotification(notification: Notification) {
-        val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
-        val repository = NotificationRepository(notificationDao)
-        repository.insertNotification(notification)
-    }
-
-    private suspend fun updateClickedByActionId(actionId: Long) {
-        val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
-        val repository = NotificationRepository(notificationDao)
-        repository.updateClickedByActionId(actionId)
     }
 }
