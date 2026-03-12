@@ -4,6 +4,12 @@ This repository is the reference Android sample for teams integrating Siprocal S
 
 `main` contains the full integration currently supported in this example project. Use it as the default starting point if you want a working end-to-end reference.
 
+## Recommended entry points
+
+- Use `main` if you want the complete integration example.
+- Use the `step/*` branches if you want to review the integration stage by stage.
+- Do not use historical internal branches as the customer onboarding path.
+
 ## What this sample includes
 
 - Basic SDK initialization
