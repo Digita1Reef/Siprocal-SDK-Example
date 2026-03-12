@@ -15,34 +15,25 @@ import java.io.IOException
 private val Context.dataStore by preferencesDataStore(
     name = "PreferenceDataStore"
 )
-class PreferenceDataStoreHelper(context: Context): IPreferenceDataStoreAPI {
 
-    // dataSource access the DataStore file and does the manipulation based on our requirements.
+class PreferenceDataStoreHelper(context: Context) : IPreferenceDataStoreAPI {
+
     private val dataSource = context.dataStore
 
-    /* This returns us a flow of data from DataStore.
-    Basically as soon we update the value in Datastore,
-    the values returned by it also changes. */
-    override suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T):
-            Flow<T> = dataSource.data.catch { exception ->
-        if (exception is IOException){
+    override fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T): Flow<T> =
+        dataSource.data.catch { exception ->
+        if (exception is IOException) {
             emit(emptyPreferences())
-        }else{
+        } else {
             throw exception
         }
-    }.map { preferences->
-        val result = preferences[key]?: defaultValue
-        result
-    }
+    }.map { preferences -> preferences[key] ?: defaultValue }
 
-    /* This returns the last saved value of the key. If we change the value,
-        it wont effect the values produced by this function */
-    override suspend fun <T> getFirstPreference(key: Preferences.Key<T>, defaultValue: T) :
-            T = dataSource.data.first()[key] ?: defaultValue
+    override suspend fun <T> getFirstPreference(key: Preferences.Key<T>, defaultValue: T): T =
+        dataSource.data.first()[key] ?: defaultValue
 
-    // This Sets the value based on the value passed in value parameter.
     override suspend fun <T> putPreference(key: Preferences.Key<T>, value: T) {
-        dataSource.edit {   preferences ->
+        dataSource.edit { preferences ->
             preferences[key] = value
         }
     }
@@ -54,8 +45,7 @@ class PreferenceDataStoreHelper(context: Context): IPreferenceDataStoreAPI {
         }
     }
 
-    // This function clears the entire Preference Datastore.
-    override suspend fun <T> clearAllPreference() {
+    override suspend fun clearAllPreferences() {
         dataSource.edit { preferences ->
             preferences.clear()
         }

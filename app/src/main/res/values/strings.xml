@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Siprocal-SDK-Example</string>
     <string name="notification_center">Notification Center</string>
+    <string name="notification_center_limit_message">Only the last 10 notifications are shown in this section.</string>
+    <string name="no_recent_notifications">No recent notifications</string>
+    <string name="notification_cta_not_implemented">CTA not implemented in this example</string>
+    <string name="notification_created_at">createdAt: %1$s</string>
+    <string name="notification_started_at">startedAt: %1$s</string>
+    <string name="notification_finalized_at">finalizedAt: %1$s</string>
+    <string name="notification_arrived_at">arrivedAt: %1$s</string>
+    <string name="ok">OK</string>
 </resources>

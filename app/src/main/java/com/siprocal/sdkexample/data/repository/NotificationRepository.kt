@@ -7,6 +7,7 @@ import com.siprocal.sdkexample.data.local.entity.Notification
 
 class NotificationRepository(private val notificationDao: NotificationDao) {
     val lastTenNotifications: LiveData<List<Notification>> = notificationDao.getLastTenNotifications()
+
     suspend fun insertNotification(notification: Notification) {
         notificationDao.insertNotification(notification)
         notificationDao.deleteOldNotifications()
@@ -18,6 +19,11 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
 
     suspend fun updateNotification(notification: Notification) {
         notificationDao.updateNotification(notification)
+    }
+
+    suspend fun markNotificationAsClicked(notification: Notification) {
+        if (notification.clicked) return
+        notificationDao.updateNotification(notification.copy(clicked = true))
     }
 
     suspend fun updateClickedByActionId(actionId: Long) {

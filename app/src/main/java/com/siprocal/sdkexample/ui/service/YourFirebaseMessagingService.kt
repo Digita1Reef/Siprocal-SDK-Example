@@ -7,15 +7,15 @@ import com.siprocal.sdk.client.SiprocalSDK
 class YourFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        if(message.from.equals(SiprocalSDK.getFCMSenderId())){
-            SiprocalSDK.handleFCMMessage( message.data.toString())
+        if (message.from == SiprocalSDK.getFCMSenderId()) {
+            SiprocalSDK.handleFCMMessage(message.data.toString())
             return
-        }else{
-            //your implementation
         }
+
+        // Your implementation for non-Siprocal messages.
     }
+
     override fun onNewToken(token: String) {
-        // your code
         SiprocalSDK.refreshFCMToken(applicationContext)
     }
 }
