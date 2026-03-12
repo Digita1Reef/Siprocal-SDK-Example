@@ -29,6 +29,13 @@ android {
             )
         }
     }
+    packaging {
+        jniLibs {
+            // AGP 8.1.1 does not produce 16 KB-compatible uncompressed native libs by default.
+            // Keep them compressed until the project is upgraded to AGP 8.5.1+.
+            useLegacyPackaging = true
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
