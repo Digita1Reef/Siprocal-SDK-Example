@@ -57,7 +57,6 @@ Each branch is based on the previous one.
 - [Firebase integration](./docs/firebase-integration.md)
 - [Notification center](./docs/notification-center.md)
 - [Sensitive data](./docs/sensitive-data.md)
-- [Repository maintenance guide](./docs/repository-structure.md)
 
 ## Feature map
 
@@ -80,7 +79,6 @@ Each branch is based on the previous one.
 
 - `main` is the stable, full example.
 - Step-by-step guidance lives in `docs/`.
-- Internal task branches should not be part of the public consumption model.
 - Use the linear `step/*` branches to represent integration checkpoints of the same SDK.
 
 ## Support notes
