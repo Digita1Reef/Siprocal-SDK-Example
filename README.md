@@ -44,7 +44,7 @@ Each branch is based on the previous one.
 1. Clone the repository.
 2. Open the project in Android Studio.
 3. Replace [`app/src/main/assets/siprocal-config.json`](./app/src/main/assets/siprocal-config.json) with the configuration file provided by Siprocal.
-4. Replace the SDK variant in [`app/build.gradle.kts`](./app/build.gradle.kts) with the one assigned to your project.
+4. The sample uses Siprocal SDK `5.10.1` and keeps `<variant>` as the placeholder. Set `siprocalSdkVariant=<variant>` in your local Gradle properties or pass `-PsiprocalSdkVariant=<variant>` when building.
 5. Add your Firebase config file at [`app/google-services.json`](./app/google-services.json) if your integration uses FCM.
 6. Ensure `jitpack.io` is available in [`settings.gradle.kts`](./settings.gradle.kts) when required by your SDK variant.
 7. Build and run the app.
@@ -83,4 +83,4 @@ Each branch is based on the previous one.
 
 ## Support notes
 
-If your project uses a different SDK variant, environment, or notification provider setup, adapt the sample using the corresponding Siprocal delivery package and use these guides as the implementation reference.
+If your project uses a different SDK variant, environment, or notification provider setup, adapt the sample using the corresponding Siprocal delivery package and use these guides as the implementation reference. The SDK version is centralized in [`gradle/libs.versions.toml`](./gradle/libs.versions.toml).

@@ -12,7 +12,7 @@ This project is intended to be consumed from `main`, which contains the complete
 
 1. Open the project in Android Studio.
 2. Add the Siprocal configuration file to `app/src/main/assets/siprocal-config.json`.
-3. Confirm the SDK dependency and variant in `app/build.gradle.kts`.
+3. Confirm the SDK version and variant. The sample is pinned to SDK `5.10.1` and keeps `<variant>` as a placeholder; use `siprocalSdkVariant` with the module assigned by Siprocal.
 4. Add `google-services.json` if Firebase is part of your setup.
 5. Review the manifest entries in `app/src/main/AndroidManifest.xml`.
 6. Build and run the project.
