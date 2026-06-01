@@ -1,11 +1,11 @@
 package com.siprocal.sdkexample.ui.view
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.siprocal.sdk.client.SiprocalSDK
 import com.siprocal.sdkexample.R
 import com.siprocal.sdkexample.datastore.PreferenceDataStoreConstants
@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 class DialogSensitiveData : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
 
             val dialogView = inflater.inflate(R.layout.popup_permission, null)
@@ -25,9 +24,9 @@ class DialogSensitiveData : DialogFragment() {
             cancelButton.setOnClickListener { persistSensitiveDataChoice(false) }
             acceptButton.setOnClickListener { persistSensitiveDataChoice(true) }
 
-            builder.setView(dialogView)
-
-            builder.create()
+            MaterialAlertDialogBuilder(it)
+                .setView(dialogView)
+                .create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 

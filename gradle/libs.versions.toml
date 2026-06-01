@@ -1,7 +1,6 @@
 [versions]
 siprocal-sdk = "5.10.1"
 agp = "8.10.1"
-fab = "1.6.4"
 kotlin = "2.2.20"
 core-ktx = "1.17.0"
 activity-ktx = "1.12.4"
@@ -23,7 +22,6 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-run
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-fab = { module = "com.github.clans:fab", version.ref = "fab" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }

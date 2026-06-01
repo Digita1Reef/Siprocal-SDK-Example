@@ -73,7 +73,6 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    implementation(libs.fab)
     implementation("com.digitalreef.phoenix:${siprocalSdkVariant.get()}:$siprocalSdkVersion")
     implementation(libs.datastore.preferences)
 }
