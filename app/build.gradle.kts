@@ -2,8 +2,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
-    kotlin("kapt")
 }
 
 val siprocalSdkVariant = providers.gradleProperty("siprocalSdkVariant").orElse("<variant>")
@@ -68,10 +68,8 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
 
     // Room dependencies
-    implementation("androidx.room:room-runtime:2.5.0")
-    kapt("androidx.room:room-compiler:2.5.0")
-    implementation("androidx.room:room-ktx:2.5.0")
-
-    implementation("com.github.clans:fab:1.6.4")
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     implementation("com.digitalreef.phoenix:${siprocalSdkVariant.get()}:$siprocalSdkVersion")
 }

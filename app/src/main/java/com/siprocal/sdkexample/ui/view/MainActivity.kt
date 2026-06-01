@@ -1,47 +1,55 @@
 package com.siprocal.sdkexample.ui.view
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.siprocal.sdk.client.EnumManager
 import com.siprocal.sdk.client.SiprocalSDK
-import com.siprocal.sdk.util.EnumManager
+import com.siprocal.sdkexample.MainApplication
 import com.siprocal.sdkexample.R
-import com.siprocal.sdkexample.data.local.db.AppDatabase
-import com.siprocal.sdkexample.data.repository.NotificationRepository
-import com.siprocal.sdkexample.data.repository.NotificationViewModelFactory
 import com.siprocal.sdkexample.databinding.ActivityMainBinding
 import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
-import com.siprocal.sdkexample.utils.Utils
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "SiproLog"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val handler = Handler(Looper.getMainLooper())
-    private lateinit var viewModel: NotificationViewModel
+    private val viewModel: NotificationViewModel by viewModels {
+        (application as MainApplication).notificationViewModelFactory
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_notifications -> {
+                    startActivity(Intent(this, NotificationActivity::class.java))
+                    true
+                }
 
-        binding.menuItem1.setOnClickListener {
-            startActivity(Intent(this, NotificationActivity::class.java))
-            binding.fab.close(true)
-        }
-        binding.menuItem2.setOnClickListener {
-            refreshData()
-            binding.fab.close(true)
+                R.id.action_refresh -> {
+                    refreshData()
+                    true
+                }
+
+                else -> false
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -49,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         refreshData()
-
         SiprocalSDK.showAvailableAd(this)
     }
 
@@ -57,13 +64,13 @@ class MainActivity : AppCompatActivity() {
         when {
             ContextCompat.checkSelfPermission(
                 this,
-                "android.permission.POST_NOTIFICATIONS"
+                Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.i(TAG, "POST_NOTIFICATION granted")
+                Log.i(TAG, "POST_NOTIFICATIONS granted")
             }
 
             else -> {
-                requestPermissionLauncher.launch("android.permission.POST_NOTIFICATIONS")
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }
@@ -72,64 +79,61 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Log.i(TAG, "POST_NOTIFICATION granted")
+            Log.i(TAG, "POST_NOTIFICATIONS granted")
         } else {
-            Log.i(TAG, "POST_NOTIFICATION denied")
+            Log.i(TAG, "POST_NOTIFICATIONS denied")
         }
     }
 
     private fun refreshData() {
-        binding.consoleOutput.text = Utils.setTexColoForConsole("Refreshing...", Utils.COLOR_GREEN)
-        handler.postDelayed({ getSDKData() }, 50)
-    }
-
-    private fun getSDKData() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val sdkInfo = fetchSDKData()
-            binding.consoleOutput.text = Utils.setTexColoForConsole("", Utils.COLOR_GREEN)
-            displaySDKData(sdkInfo)
-            deleteOldNotifications()
+        setRefreshing(true)
+        lifecycleScope.launch {
+            val sdkInfo = fetchSdkData()
+            displaySdkData(sdkInfo)
+            viewModel.deleteOldNotifications()
+            setRefreshing(false)
         }
     }
 
-    private suspend fun fetchSDKData(): Map<EnumManager.SdkInformation, String> {
+    private suspend fun fetchSdkData(): Map<EnumManager.SdkInformation, String> {
         return withContext(Dispatchers.IO) {
-            val sdkInfo = mutableMapOf<EnumManager.SdkInformation, String>()
-            sdkInfo[EnumManager.SdkInformation.SDK_VERSION] =
-                SiprocalSDK.getSdkInformation(EnumManager.SdkInformation.SDK_VERSION)
-            sdkInfo[EnumManager.SdkInformation.BASE_ORG] =
-                SiprocalSDK.getSdkInformation(EnumManager.SdkInformation.BASE_ORG)
-            sdkInfo[EnumManager.SdkInformation.ORG] =
-                SiprocalSDK.getSdkInformation(EnumManager.SdkInformation.ORG)
-            sdkInfo[EnumManager.SdkInformation.STATE_SDK] =
-                SiprocalSDK.getSdkInformation(EnumManager.SdkInformation.STATE_SDK)
-            sdkInfo[EnumManager.SdkInformation.CLIENT_ID] =
-                SiprocalSDK.getSdkInformation(EnumManager.SdkInformation.CLIENT_ID)
-            sdkInfo[EnumManager.SdkInformation.SENSITIVE_DATA] =
-                SiprocalSDK.getSdkInformation(EnumManager.SdkInformation.SENSITIVE_DATA)
-            delay(1000)
+            val keys = listOf(
+                EnumManager.SdkInformation.SDK_VERSION,
+                EnumManager.SdkInformation.BASE_ORG,
+                EnumManager.SdkInformation.ORG,
+                EnumManager.SdkInformation.STATE_SDK,
+                EnumManager.SdkInformation.CLIENT_ID,
+                EnumManager.SdkInformation.SENSITIVE_DATA
+            )
+
+            val sdkInfo = keys.associateWith(SiprocalSDK::getSdkInformation).toMutableMap()
             sdkInfo
         }
     }
 
-    private fun displaySDKData(sdkInfo: Map<EnumManager.SdkInformation, String>) {
-        sdkInfo.forEach { (key, value) ->
-            binding.consoleOutput.append(
-                Utils.setTexColoForConsole(
-                    "${key.name} : $value\n",
-                    Utils.COLOR_GREEN
-                )
-            )
+    private fun displaySdkData(sdkInfo: Map<EnumManager.SdkInformation, String>) {
+        binding.sdkVersionValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.SDK_VERSION)
+        binding.baseOrgValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.BASE_ORG)
+        binding.organizationValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.ORG)
+        binding.stateValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.STATE_SDK)
+        binding.clientIdValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.CLIENT_ID)
+        binding.sensitiveDataValue.text =
+            sdkInfo.displayValue(EnumManager.SdkInformation.SENSITIVE_DATA)
+        binding.lastUpdatedLabel.text = getString(R.string.sdk_status_refreshed)
+    }
+
+    private fun setRefreshing(refreshing: Boolean) {
+        binding.refreshProgress.isVisible = refreshing
+        binding.lastUpdatedLabel.text = if (refreshing) {
+            getString(R.string.sdk_status_refreshing)
+        } else {
+            getString(R.string.sdk_status_refreshed)
         }
     }
 
-    private fun deleteOldNotifications() {
-        val notificationDao = AppDatabase.getDatabase(applicationContext).notificationDao()
-        val repository = NotificationRepository(notificationDao)
-        val factory = NotificationViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory).get(NotificationViewModel::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.deleteOldNotifications()
-        }
+    private fun Map<EnumManager.SdkInformation, String>.displayValue(
+        key: EnumManager.SdkInformation
+    ): String {
+        return get(key).orEmpty().ifBlank { getString(R.string.value_placeholder) }
     }
 }

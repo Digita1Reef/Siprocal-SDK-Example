@@ -40,10 +40,16 @@ class NotificationAdapter(
                 binding.notificationCardView.setCardBackgroundColor(
                     ContextCompat.getColor(context, R.color.backgroundCardViewClicked)
                 )
+                binding.notificationCardView.strokeColor =
+                    ContextCompat.getColor(context, R.color.brand_secondary)
+                binding.notificationStatus.text = context.getString(R.string.notification_seen)
             } else {
                 binding.notificationCardView.setCardBackgroundColor(
                     ContextCompat.getColor(context, R.color.backgroundCardView)
                 )
+                binding.notificationCardView.strokeColor =
+                    ContextCompat.getColor(context, R.color.border)
+                binding.notificationStatus.text = context.getString(R.string.notification_new)
             }
 
             binding.notificationTitle.text = notification.title
@@ -99,6 +105,9 @@ class NotificationAdapter(
                     binding.notificationCardView.setCardBackgroundColor(
                         ContextCompat.getColor(context, R.color.backgroundCardViewClicked)
                     )
+                    binding.notificationCardView.strokeColor =
+                        ContextCompat.getColor(context, R.color.brand_secondary)
+                    binding.notificationStatus.text = context.getString(R.string.notification_seen)
                 }
             }
         }
