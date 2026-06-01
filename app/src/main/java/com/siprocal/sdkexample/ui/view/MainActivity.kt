@@ -20,6 +20,7 @@ import com.siprocal.sdkexample.R
 import com.siprocal.sdkexample.databinding.ActivityMainBinding
 import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -106,7 +107,15 @@ class MainActivity : AppCompatActivity() {
                 EnumManager.SdkInformation.SENSITIVE_DATA
             )
 
-            val sdkInfo = keys.associateWith(SiprocalSDK::getSdkInformation).toMutableMap()
+            var sdkInfo = keys.associateWith(SiprocalSDK::getSdkInformation)
+            repeat(4) {
+                val sdkState = sdkInfo[EnumManager.SdkInformation.STATE_SDK].orEmpty()
+                if (!sdkState.equals("INITIAL", ignoreCase = true)) {
+                    return@withContext sdkInfo
+                }
+                delay(750)
+                sdkInfo = keys.associateWith(SiprocalSDK::getSdkInformation)
+            }
             sdkInfo
         }
     }
