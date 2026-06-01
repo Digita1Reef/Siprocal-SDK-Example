@@ -6,9 +6,12 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+val siprocalSdkVariant = providers.gradleProperty("siprocalSdkVariant").orElse("<variant>")
+val siprocalSdkVersion = libs.versions.siprocal.sdk.get()
+
 android {
     namespace = "com.siprocal.sdkexample"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.siprocal.sdkexample"
@@ -50,6 +53,8 @@ android {
 dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.core.ktx)
+    implementation(libs.activity.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
@@ -59,8 +64,8 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging")
 
     // Room dependencies
     implementation(libs.androidx.room.runtime)
@@ -68,7 +73,6 @@ dependencies {
     implementation(libs.androidx.room.ktx)
 
     implementation(libs.fab)
-    implementation("com.digitalreef.phoenix:<variant>:5.8.0")
-
+    implementation("com.digitalreef.phoenix:${siprocalSdkVariant.get()}:$siprocalSdkVersion")
     implementation(libs.datastore.preferences)
 }
