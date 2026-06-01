@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#005A8D</color>
+    <color name="colorPrimaryDark">#003B5C</color>
+    <color name="colorAccent">#20A585</color>
+    <color name="imgbg">#E6E6E6</color>
+    <color name="green_new">#009B9B</color>
+    <color name="darkgrey">#A9A9A9</color>
+    <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="background">#F6F8FB</color>
+    <color name="backgroundCardView">#FFFFFF</color>
+    <color name="backgroundCardViewClicked">#EEF7F4</color>
+    <color name="blue">#005A8D</color>
+    <color name="surface_background">#F6F8FB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_muted">#EEF3F7</color>
+    <color name="border">#DCE4EA</color>
+    <color name="text_primary">#17212B</color>
+    <color name="text_secondary">#526170</color>
+    <color name="text_tertiary">#6F7D89</color>
+    <color name="brand_primary">#005A8D</color>
+    <color name="brand_primary_dark">#003B5C</color>
+    <color name="brand_primary_soft">#EAF5FB</color>
+    <color name="brand_primary_soft_stroke">#CDE7F5</color>
+    <color name="brand_secondary">#20A585</color>
+    <color name="brand_secondary_soft">#E7F7F3</color>
 </resources>
