@@ -60,8 +60,9 @@ class MainActivity : AppCompatActivity() {
             checkAndRequestNotificationPermission()
         }
 
-        refreshData()
         SiprocalSDK.showAvailableAd(this)
+        refreshData()
+        scheduleSdkStatusRefresh()
         maybeShowSensitiveDataPermission()
     }
 
@@ -97,6 +98,19 @@ class MainActivity : AppCompatActivity() {
             displaySdkData(sdkInfo)
             viewModel.deleteOldNotifications()
             setRefreshing(false)
+        }
+    }
+
+    private fun scheduleSdkStatusRefresh() {
+        lifecycleScope.launch {
+            repeat(6) {
+                delay(10_000)
+                val currentState = binding.stateValue.text.toString()
+                if (!currentState.equals("INITIAL", ignoreCase = true)) {
+                    return@launch
+                }
+                refreshData()
+            }
         }
     }
 
