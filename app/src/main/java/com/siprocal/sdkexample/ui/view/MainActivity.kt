@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.siprocal.sdk.client.EnumManager
@@ -20,9 +21,7 @@ import com.siprocal.sdkexample.databinding.ActivityMainBinding
 import com.siprocal.sdkexample.datastore.PreferenceDataStoreConstants
 import com.siprocal.sdkexample.datastore.PreferenceDataStoreHelper
 import com.siprocal.sdkexample.ui.viewmodel.NotificationViewModel
-import com.siprocal.sdkexample.utils.Utils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,14 +39,20 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_notifications -> {
+                    startActivity(Intent(this, NotificationActivity::class.java))
+                    true
+                }
 
-        binding.menuItem1.setOnClickListener {
-            startActivity(Intent(this, NotificationActivity::class.java))
-            binding.fab.close(true)
-        }
-        binding.menuItem2.setOnClickListener {
-            refreshData()
-            binding.fab.close(true)
+                R.id.action_refresh -> {
+                    refreshData()
+                    true
+                }
+
+                else -> false
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -55,9 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         refreshData()
-
         SiprocalSDK.showAvailableAd(this)
-
         maybeShowSensitiveDataPermission()
     }
 
@@ -87,13 +90,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshData() {
-        binding.consoleOutput.text =
-            Utils.setTextColorForConsole("Refreshing...", Utils.colorGreen)
+        setRefreshing(true)
         lifecycleScope.launch {
             val sdkInfo = fetchSdkData()
-            binding.consoleOutput.text = Utils.setTextColorForConsole("", Utils.colorGreen)
             displaySdkData(sdkInfo)
             viewModel.deleteOldNotifications()
+            setRefreshing(false)
         }
     }
 
@@ -109,19 +111,27 @@ class MainActivity : AppCompatActivity() {
             )
 
             val sdkInfo = keys.associateWith(SiprocalSDK::getSdkInformation).toMutableMap()
-            delay(1000)
             sdkInfo
         }
     }
 
     private fun displaySdkData(sdkInfo: Map<EnumManager.SdkInformation, String>) {
-        sdkInfo.forEach { (key, value) ->
-            binding.consoleOutput.append(
-                Utils.setTextColorForConsole(
-                    "${key.name} : $value\n",
-                    Utils.colorGreen
-                )
-            )
+        binding.sdkVersionValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.SDK_VERSION)
+        binding.baseOrgValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.BASE_ORG)
+        binding.organizationValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.ORG)
+        binding.stateValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.STATE_SDK)
+        binding.clientIdValue.text = sdkInfo.displayValue(EnumManager.SdkInformation.CLIENT_ID)
+        binding.sensitiveDataValue.text =
+            sdkInfo.displayValue(EnumManager.SdkInformation.SENSITIVE_DATA)
+        binding.lastUpdatedLabel.text = getString(R.string.sdk_status_refreshed)
+    }
+
+    private fun setRefreshing(refreshing: Boolean) {
+        binding.refreshProgress.isVisible = refreshing
+        binding.lastUpdatedLabel.text = if (refreshing) {
+            getString(R.string.sdk_status_refreshing)
+        } else {
+            getString(R.string.sdk_status_refreshed)
         }
     }
 
@@ -136,5 +146,11 @@ class MainActivity : AppCompatActivity() {
                 DialogSensitiveData().show(supportFragmentManager, DialogSensitiveData.TAG)
             }
         }
+    }
+
+    private fun Map<EnumManager.SdkInformation, String>.displayValue(
+        key: EnumManager.SdkInformation
+    ): String {
+        return get(key).orEmpty().ifBlank { getString(R.string.value_placeholder) }
     }
 }

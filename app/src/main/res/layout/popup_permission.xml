@@ -1,80 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    <!-- ScrollView for the terms and data disclosure content -->
-   <!-- <ScrollView
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/empty_state_icon_background"
+        android:contentDescription="@string/sensitive_data_title"
+        android:padding="12dp"
+        android:src="@drawable/ic_security_24"
+        app:tint="@color/brand_primary" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonPanel">-->
+        android:layout_marginTop="16dp"
+        android:text="@string/sensitive_data_title"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/contentText"
-            android:padding="16dp">
-
-            <!-- App name and version -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="SIPROCAL Example"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <!-- Terms & Data Disclosure title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="Terms &amp; Data Disclosure"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!-- List of personal identifiable information -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="While using the application, we may collect certain personally identifiable information or device information that may be used for Demo purposes:\n\nApps Installed\nIMEI (less than Android 10)\nPhone Number/ICCID\n\n "
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Do you give us your consent to collect this data?"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-   <!-- </ScrollView>-->
-
-    <!-- Button panel for Cancel and Accept buttons -->
-    <RelativeLayout
-        android:id="@+id/buttonPanel"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/contentText"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_marginTop="8dp"
+        android:text="@string/sensitive_data_description"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/text_secondary" />
 
-        <Button
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/info_banner_background"
+        android:padding="12dp"
+        android:text="@string/sensitive_data_examples"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="@color/text_primary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="No" />
+            android:text="@string/not_now" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/acceptButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="Yes" />
-    </RelativeLayout>
-</RelativeLayout>
+            android:layout_marginStart="8dp"
+            android:text="@string/allow" />
+    </LinearLayout>
+</LinearLayout>
